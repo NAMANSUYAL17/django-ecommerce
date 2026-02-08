@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+
+    <!-- Product Image -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            {% if product.image %}
+                <img src="{{ product.image.url }}"
+                     class="card-img-top"
+                     alt="{{ product.name }}">
+            {% else %}
+                <img src="https://via.placeholder.com/500"
+                     class="card-img-top"
+                     alt="No image">
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+        <h2 class="mb-3">{{ product.name }}</h2>
+
+        <p class="text-muted mb-2">
+            Category:
+            <a href="{% url 'products:category_filter' product.category.slug %}">
+                {{ product.category.name }}
+            </a>
+        </p>
+
+        <h4 class="text-success mb-3">₹ {{ product.price }}</h4>
+
+        <p class="mb-4">
+            {{ product.description|linebreaks }}
+        </p>
+
+        {% if product.stock > 0 %}
+            <p class="text-success">In Stock ({{ product.stock }})</p>
+            <a href="{% url 'cart:cart_add' product.id %}"
+            class="btn btn-dark btn-lg">
+                Add to Cart
+            </a>
+        {% else %}
+            <p class="text-danger">Out of Stock</p>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}
